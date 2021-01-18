@@ -38,4 +38,11 @@ public class binaryTree{
         display(node.right);
 
     }
+    public int size(){
+        return size(root);
+    }
+    private int size(Node node){
+        if(node==null) return 0;
+        return size(node.left)+size(node.right)+1;
+    }
 }
