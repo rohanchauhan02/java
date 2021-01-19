@@ -82,6 +82,33 @@ public class binaryTree{
         if(node.data==data) return true;
         return find(node.left,data)|| find(node.right,data);
     }
+    public void preOrder(){
+        preOrder(root);
+    }
+    private void preOrder(Node node){
+        if(node==null) return;
+        System.out.print(node.data+"->");
+        preOrder(node.left);
+        preOrder(node.right);
+    }
+    public void inOrder(){
+        inOrder(root);
+    }
+    private void inOrder(Node node){
+        if(node==null) return;
+        inOrder(node.left);
+        System.out.print(node.data+"->");
+        inOrder(node.right);
+    }
+    public void postOrder(){
+        postOrder(root);
+    }
+    private void postOrder(Node node){
+        if(node==null) return;
+        postOrder(node.left);
+        postOrder(node.right);
+        System.out.print(node.data+"->");
+    }
     public void rootToNodePath(int data){
         ArrayList<Node>ans=rootToNodePath(root, data);
         for(Node node: ans){
@@ -130,16 +157,83 @@ public class binaryTree{
     }
     Node lca=null;
     public void lca02(int data1,int data2){
-        System.out.println(lca02(root,data1,data2));
+        lca02(root,data1,data2);
     }
     private boolean lca02(Node node,int data1,int data2){
         if(node==null) return false;
 
-        boolean selfDone=
+        boolean selfDone=node.data==data1 || node.data==data2;
         boolean ls=lca02(node.left, data1, data2);
         boolean rs=lca02(node.right, data1, data2);
-
-
+        if((ls&&rs)||(ls&&selfDone)||(rs&&selfDone))
+        lca=node;
+        if(lca!=null){
+            System.out.println("lca: "+lca.data);
+        }
         return ls||rs||selfDone;
+    }
+    public void leafNodes(){
+        leafNodes(root);
+        System.out.println();
+    }
+    private void leafNodes(Node node){
+        if(node==null) return;
+        if(node.left==null && node.right==null){
+            System.out.print(node.data+"->");
+            return;
+        }
+        leafNodes(node.left);
+        leafNodes(node.right);
+    }
+    public void levelOrder(){
+        levelOrder(root);
+    }
+    private void levelOrder(Node node){
+        LinkedList<Node>que=new LinkedList<>();
+        que.addLast(node);
+        while(!que.isEmpty()){
+            Node proc=que.removeFirst();
+            System.out.print(proc.data+"->");
+            if(proc.left!=null) que.addLast(proc.left);
+            if(proc.right!=null) que.addLast(proc.right);
+        }
+        System.err.println("done");
+    }
+    public void levelOrder01(){
+        levelOrder01(root);
+    }
+    private void levelOrder01(Node node){
+        LinkedList<Node>que=new LinkedList<>();
+        que.addLast(node);
+        while(!que.isEmpty()){
+            int count=que.size();
+            while(count-->0){
+                Node proc=que.removeFirst();
+                System.out.print(proc.data+"->");
+                if(proc.left!=null) que.addLast(proc.left);
+                if(proc.right!=null) que.addLast(proc.right);
+            }
+            System.out.println();
+        }
+    }
+    public void levelOrder02(){
+        levelOrder02(root);
+    }
+    private void levelOrder02(Node node){
+        LinkedList<Node> que=new LinkedList<>();
+        LinkedList<Node>childQue=new LinkedList<>();
+        que.addLast(node);
+        while(!que.isEmpty()){
+            Node proc=que.removeFirst();
+            System.out.print(proc.data+"->");
+            if(proc.left!=null) childQue.addLast(proc.left);
+            if(proc.right!=null) childQue.addLast(proc.right);
+            if(que.size()==0){
+                System.out.println();
+                LinkedList<Node>temp=que;
+                que=childQue;
+                childQue=temp;
+            }
+        }
     }
 }
